@@ -3,11 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.fragments.ConversationList">
+    tools:context=".ui.fragments.ConversationList"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <TextView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/conversation_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="conversations" />
+        android:scrollbars="vertical"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
 </FrameLayout>
