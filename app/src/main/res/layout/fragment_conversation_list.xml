@@ -13,4 +13,15 @@
         android:scrollbars="vertical"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/new_conversation_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_margin="16dp"
+        android:backgroundTint="#FFD600"
+        android:contentDescription="@string/new_conversation_label"
+        android:src="@drawable/ic_add"
+        app:backgroundTint="#FFD600" />
+
 </FrameLayout>
