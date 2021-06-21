@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/conversationList">
+
+    <fragment
+        android:id="@+id/conversationList"
+        android:name="ca.uqac.programmationmobile.messages.ui.fragments.ConversationList"
+        android:label="fragment_conversation_list"
+        tools:layout="@layout/fragment_conversation_list" />
+    <fragment
+        android:id="@+id/friends"
+        android:name="ca.uqac.programmationmobile.messages.ui.fragments.Friends"
+        android:label="fragment_friends"
+        tools:layout="@layout/fragment_friends" />
+    <fragment
+        android:id="@+id/profile"
+        android:name="ca.uqac.programmationmobile.messages.ui.fragments.Profile"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" />
+</navigation>
