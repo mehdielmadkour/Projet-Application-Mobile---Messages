@@ -3,7 +3,6 @@ package ca.uqac.programmationmobile.messages.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import ca.uqac.programmationmobile.messages.R
@@ -27,9 +26,9 @@ class ConversationsAdapter(private var dataset: List<Conversation>? = null) : Re
         if (dataset == null) return
         val conversation = dataset!![position]
         holder.title_text_view.text = conversation.title
-        conversation.lastMessage?.let {
-            holder.last_user_text_view.text = conversation.lastMessage.user
-            holder.last_message_text_view.text = conversation.lastMessage.text
+        conversation.lastMessage?.let { message ->
+            holder.last_user_text_view.text = message.user
+            holder.last_message_text_view.text = message.text
         }
     }
 
