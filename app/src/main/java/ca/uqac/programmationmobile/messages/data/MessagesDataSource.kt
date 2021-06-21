@@ -12,7 +12,7 @@ class MessagesDataSource {
 
     data class MessagesHolder(val messages: List<Message>?, val errorMsg: String?)
 
-    fun getMessagesfromConversation(convId: String) : LiveData<MessagesHolder> {
+    fun getMessagesfromConversation(conversationId: String) : LiveData<MessagesHolder> {
         val data = MutableLiveData<MessagesHolder>()
 
         val messages = listOf<Message>(

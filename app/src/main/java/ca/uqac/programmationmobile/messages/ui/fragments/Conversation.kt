@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.textclassifier.ConversationAction
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import ca.uqac.programmationmobile.messages.R
@@ -19,9 +20,11 @@ class Conversation : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_conversation, container, false)
 
+        val conversationId = arguments?.get("conversationId") as String
+
         view.findViewById<RecyclerView>(R.id.recycler_chat).adapter = MessagesAdapter(null)
 
-        MessagesDataSource().getMessagesfromConversation("").observe(viewLifecycleOwner, { holder ->
+        MessagesDataSource().getMessagesfromConversation(conversationId).observe(viewLifecycleOwner, { holder ->
             if (holder.messages != null) {
                 (view.findViewById<RecyclerView>(R.id.recycler_chat).adapter as MessagesAdapter).updateData(holder.messages)
             }

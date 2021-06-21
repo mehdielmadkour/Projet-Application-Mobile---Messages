@@ -6,10 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import ca.uqac.programmationmobile.messages.R
 import ca.uqac.programmationmobile.messages.adapters.ConversationsAdapter
 import ca.uqac.programmationmobile.messages.data.ConversationsDataSource
+import ca.uqac.programmationmobile.messages.models.Conversation
 
 class ConversationList : Fragment() {
     override fun onCreateView(
@@ -19,7 +21,9 @@ class ConversationList : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_conversation_list, container, false)
 
-        view.findViewById<RecyclerView>(R.id.conversation_list).adapter = ConversationsAdapter(null)
+        view.findViewById<RecyclerView>(R.id.conversation_list).adapter = ConversationsAdapter(null) { conversation ->
+            onConversationClick(conversation)
+        }
 
         ConversationsDataSource().getUserConversations("").observe(viewLifecycleOwner, { holder ->
             if (holder.conversations != null) {
@@ -31,5 +35,10 @@ class ConversationList : Fragment() {
         })
 
         return view
+    }
+
+    fun onConversationClick(conversation: Conversation) {
+        val action = ConversationListDirections.actionConversationListToConversation3(conversationId = conversation.id)
+        findNavController().navigate(action)
     }
 }
