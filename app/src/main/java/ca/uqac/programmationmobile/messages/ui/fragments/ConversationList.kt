@@ -34,6 +34,11 @@ class ConversationList : Fragment() {
             }
         })
 
+        view.findViewById<View>(R.id.new_conversation_button).setOnClickListener {
+            val action = ConversationListDirections.actionConversationListToCreateConversation()
+            findNavController().navigate(action)
+        }
+
         return view
     }
 
