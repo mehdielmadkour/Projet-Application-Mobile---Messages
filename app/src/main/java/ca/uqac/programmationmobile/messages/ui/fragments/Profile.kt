@@ -1,11 +1,8 @@
 package ca.uqac.programmationmobile.messages.ui.fragments
 
 import android.content.Intent
-import android.icu.number.NumberFormatter.with
-import android.icu.number.NumberRangeFormatter.with
 import android.os.Bundle
 import android.util.DisplayMetrics
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -18,7 +15,6 @@ import androidmads.library.qrgenearator.QRGEncoder
 import ca.uqac.programmationmobile.messages.R
 import ca.uqac.programmationmobile.messages.ui.LoginActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.squareup.picasso.Picasso
 

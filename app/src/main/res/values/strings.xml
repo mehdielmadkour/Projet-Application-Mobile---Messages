@@ -5,4 +5,5 @@
     <string name="conversations_label">Conversations</string>
     <string name="friends_label">Friends</string>
     <string name="new_conversation_label">New Conversation</string>
+    <string name="new_friend_label">new friend</string>
 </resources>
