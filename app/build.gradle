@@ -58,4 +58,10 @@ dependencies {
 
     //Google play services
     implementation 'com.google.android.gms:play-services-auth:19.0.0'
+
+    //Picasso
+    implementation 'com.squareup.picasso:picasso:2.71828'
+
+    //QR Generator
+    implementation 'androidmads.library.qrgenearator:QRGenearator:1.0.3'
 }
