@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import ca.uqac.programmationmobile.messages.R
 import ca.uqac.programmationmobile.messages.adapters.FriendsAdapter
@@ -31,6 +32,11 @@ class Friends : Fragment() {
                 Toast.makeText(activity, holder.errorMsg, Toast.LENGTH_SHORT).show()
             }
         })
+
+        view.findViewById<View>(R.id.new_friend_button).setOnClickListener {
+            val action = FriendsDirections.actionFriendsToQrScanner()
+            findNavController().navigate(action)
+        }
 
         return view
     }
