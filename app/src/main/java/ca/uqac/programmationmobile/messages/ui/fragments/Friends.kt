@@ -5,7 +5,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.recyclerview.widget.RecyclerView
 import ca.uqac.programmationmobile.messages.R
+import ca.uqac.programmationmobile.messages.adapters.FriendsAdapter
+import ca.uqac.programmationmobile.messages.adapters.MessagesAdapter
+import ca.uqac.programmationmobile.messages.data.MessagesDataSource
+import ca.uqac.programmationmobile.messages.data.UserDataSource
 
 class Friends : Fragment() {
     override fun onCreateView(
@@ -13,6 +19,19 @@ class Friends : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_friends, container, false)
+        val view = inflater.inflate(R.layout.fragment_friends, container, false)
+
+        view.findViewById<RecyclerView>(R.id.friend_list).adapter = FriendsAdapter(null)
+
+        UserDataSource().getFriends("").observe(viewLifecycleOwner, { holder ->
+            if (holder.users != null) {
+                (view.findViewById<RecyclerView>(R.id.friend_list).adapter as FriendsAdapter).updateData(holder.users)
+            }
+            else {
+                Toast.makeText(activity, holder.errorMsg, Toast.LENGTH_SHORT).show()
+            }
+        })
+
+        return view
     }
 }

@@ -18,7 +18,7 @@ class FriendsAdapter(private var dataset: List<User>? = null) : RecyclerView.Ada
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FriendViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.message_item_layout, parent, false)
+            .inflate(R.layout.friend_item_layout, parent, false)
 
         return FriendViewHolder(view)
     }
