@@ -58,5 +58,9 @@
         android:id="@+id/qrScanner"
         android:name="ca.uqac.programmationmobile.messages.ui.fragments.QrScanner"
         android:label="fragment_qr_scanner"
-        tools:layout="@layout/fragment_qr_scanner" />
+        tools:layout="@layout/fragment_qr_scanner" >
+        <action
+            android:id="@+id/action_qrScanner_to_friends"
+            app:destination="@id/friends" />
+    </fragment>
 </navigation>
