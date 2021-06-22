@@ -4,6 +4,7 @@ import android.content.Intent
 import android.icu.number.NumberFormatter.with
 import android.icu.number.NumberRangeFormatter.with
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -12,6 +13,8 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidmads.library.qrgenearator.QRGContents
+import androidmads.library.qrgenearator.QRGEncoder
 import ca.uqac.programmationmobile.messages.R
 import ca.uqac.programmationmobile.messages.ui.LoginActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -55,6 +58,19 @@ class Profile : Fragment() {
         }
 
 
+        view.findViewById<ImageView>(R.id.qr_code).also { imageView ->
+            val displayMetrics = DisplayMetrics()
+            activity?.windowManager?.defaultDisplay?.getMetrics(displayMetrics)
+
+            val width = displayMetrics.widthPixels
+            val height = displayMetrics.heightPixels
+
+            var size = if(width < height) width else height
+            size = size * 3 / 4
+
+            val QREncoder = QRGEncoder(account?.id.toString(), null, QRGContents.Type.TEXT, size)
+            imageView.setImageBitmap(QREncoder.encodeAsBitmap())
+        }
 
         return view
     }
