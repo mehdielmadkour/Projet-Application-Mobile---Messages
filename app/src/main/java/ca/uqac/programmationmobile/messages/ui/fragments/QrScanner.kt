@@ -19,7 +19,9 @@ import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import ca.uqac.programmationmobile.messages.R
+import ca.uqac.programmationmobile.messages.data.UserDataSource
 import ca.uqac.programmationmobile.messages.ui.MainActivity
+import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.mlkit.vision.barcode.Barcode
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
@@ -89,6 +91,8 @@ class QrScanner : Fragment() {
                 .build()
                 .also {
                     it.setAnalyzer(cameraExecutor, QRAnalyzer(barcodeOptions) { result ->
+                        val account = GoogleSignIn.getLastSignedInAccount(requireContext())
+                        UserDataSource().addFriend(account!!.id, result)
                         findNavController().navigateUp()
                     })
                 }
