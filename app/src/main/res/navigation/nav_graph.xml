@@ -26,7 +26,11 @@
         android:id="@+id/friends"
         android:name="ca.uqac.programmationmobile.messages.ui.fragments.Friends"
         android:label="fragment_friends"
-        tools:layout="@layout/fragment_friends" />
+        tools:layout="@layout/fragment_friends" >
+        <action
+            android:id="@+id/action_friends_to_qrScanner"
+            app:destination="@id/qrScanner" />
+    </fragment>
     <fragment
         android:id="@+id/profile"
         android:name="ca.uqac.programmationmobile.messages.ui.fragments.Profile"
@@ -49,5 +53,14 @@
                 app:argType="string"
                 android:defaultValue="NONE"/>
         </action>
+    </fragment>
+    <fragment
+        android:id="@+id/qrScanner"
+        android:name="ca.uqac.programmationmobile.messages.ui.fragments.QrScanner"
+        android:label="fragment_qr_scanner"
+        tools:layout="@layout/fragment_qr_scanner" >
+        <action
+            android:id="@+id/action_qrScanner_to_friends"
+            app:destination="@id/friends" />
     </fragment>
 </navigation>

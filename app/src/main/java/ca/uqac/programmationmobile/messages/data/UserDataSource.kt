@@ -1,5 +1,6 @@
 package ca.uqac.programmationmobile.messages.data
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import ca.uqac.programmationmobile.messages.models.Message
@@ -24,5 +25,9 @@ class UserDataSource {
         data.value = UsersHolder(friends, null)
 
         return data
+    }
+
+    fun addFriend(uid: String, friendId: String) {
+        Log.d("UserDataSource", "add $friendId to $uid's friends")
     }
 }
