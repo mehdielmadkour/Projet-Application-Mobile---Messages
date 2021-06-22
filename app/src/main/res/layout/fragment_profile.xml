@@ -1,13 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.fragments.Profile">
 
+
+    <ImageView
+        android:id="@+id/profile_image"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:layout_width="176dp"
+        android:layout_height="182dp"
+        android:src="@drawable/ic_profile"
+        android:layout_weight="1"/>
+
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="profile" />
+        android:layout_height="wrap_content"
+        android:id="@+id/username"
+        android:layout_below="@id/profile_image"
+        android:layout_margin="16dp"
+        android:text="Username"
+        android:textSize="20sp"
+        android:gravity="center"/>
 
-</FrameLayout>
+    <ImageView
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:id="@+id/qr_code"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:layout_below="@id/username"
+        android:contentDescription="QR Code" />
+
+    <Button
+        android:id="@+id/btn_sign_out"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_below="@id/qr_code"
+        android:gravity="center"
+        android:text="Sign out"
+        android:textSize="20sp"
+        android:layout_margin="16dp"/>
+
+</RelativeLayout>
