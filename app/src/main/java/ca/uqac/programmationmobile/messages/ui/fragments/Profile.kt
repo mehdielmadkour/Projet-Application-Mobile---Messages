@@ -1,18 +1,23 @@
 package ca.uqac.programmationmobile.messages.ui.fragments
 
 import android.content.Intent
+import android.icu.number.NumberFormatter.with
+import android.icu.number.NumberRangeFormatter.with
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import ca.uqac.programmationmobile.messages.R
 import ca.uqac.programmationmobile.messages.ui.LoginActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.squareup.picasso.Picasso
 
 class Profile : Fragment() {
     override fun onCreateView(
@@ -40,6 +45,16 @@ class Profile : Fragment() {
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
             startActivity(intent)
         }
+
+        view.findViewById<ImageView>(R.id.profile_image).also { imageView ->
+            Picasso.get()
+                .load(account?.photoUrl.toString().replace("http:", "https:"))
+                .placeholder(R.drawable.ic_profile)
+                .error(R.drawable.ic_profile)
+                .into(imageView);
+        }
+
+
 
         return view
     }
