@@ -24,7 +24,7 @@ class Friends : Fragment() {
 
         view.findViewById<RecyclerView>(R.id.friend_list).adapter = FriendsAdapter(null)
 
-        UserDataSource().getFriends("").observe(viewLifecycleOwner, { holder ->
+        UserDataSource(requireContext()).getFriends("123").observe(viewLifecycleOwner, { holder ->
             if (holder.users != null) {
                 (view.findViewById<RecyclerView>(R.id.friend_list).adapter as FriendsAdapter).updateData(holder.users)
             }

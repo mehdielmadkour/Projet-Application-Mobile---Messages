@@ -92,7 +92,7 @@ class QrScanner : Fragment() {
                 .also {
                     it.setAnalyzer(cameraExecutor, QRAnalyzer(barcodeOptions) { result ->
                         val account = GoogleSignIn.getLastSignedInAccount(requireContext())
-                        UserDataSource().addFriend(account!!.id, result)
+                        UserDataSource(requireContext()).addFriend(account!!.id, result)
                         findNavController().navigateUp()
                     })
                 }
