@@ -13,6 +13,7 @@ import android.widget.TextView
 import androidmads.library.qrgenearator.QRGContents
 import androidmads.library.qrgenearator.QRGEncoder
 import ca.uqac.programmationmobile.messages.R
+import ca.uqac.programmationmobile.messages.data.UserDataSource
 import ca.uqac.programmationmobile.messages.ui.LoginActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -28,6 +29,12 @@ class Profile : Fragment() {
 
 
         val account = GoogleSignIn.getLastSignedInAccount(context)
+
+        UserDataSource(requireContext()).createUser(
+            account!!.id,
+            account!!.displayName,
+            (account!!.photoUrl ?: "") as String
+        )
 
         view.findViewById<TextView>(R.id.username).also { textview ->
             textview.text = account!!.displayName
