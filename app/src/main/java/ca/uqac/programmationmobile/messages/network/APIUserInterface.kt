@@ -4,19 +4,30 @@ import ca.uqac.programmationmobile.messages.models.User
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 interface APIUserInterface {
 
-    @POST("createUser")
-    fun createUser(uid : String, username : String, photoUrl : String)
+    @POST("createUser/{uid}/{username}/{photoUrl}")
+    fun createUser(
+        @Path("uid") uid : String,
+        @Path("username") username : String,
+        @Path("photoUrl") photoUrl : String
+    )
 
-    @GET("user")
-    fun getUser(uid : String) : Call<User>
+    @GET("user/{uid}")
+    fun getUser(
+        @Path("uid") uid : String
+    ) : Call<User>
 
-    @POST("addFriend")
-    fun addFriend(uid : String, friendId : String)
+    @POST("addFriend/{uid}/{friendId}")
+    fun addFriend(
+        @Path("uid") uid : String,
+        @Path("friendId") friendId : String
+    )
 
-    @GET("friendList")
-    fun getFriends(uid : String) : Call<List<User>>
-
+    @GET("friendList/{uid}")
+    fun getFriends(
+        @Path("uid") uid : String
+    ) : Call<List<User>>
 }
