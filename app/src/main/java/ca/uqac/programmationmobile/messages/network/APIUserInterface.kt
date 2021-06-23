@@ -13,7 +13,7 @@ interface APIUserInterface {
         @Path("uid") uid : String,
         @Path("username") username : String,
         @Path("photoUrl") photoUrl : String
-    )
+    ) : Call<Unit>
 
     @GET("user/{uid}")
     fun getUser(
@@ -24,7 +24,7 @@ interface APIUserInterface {
     fun addFriend(
         @Path("uid") uid : String,
         @Path("friendId") friendId : String
-    )
+    ) : Call<Unit>
 
     @GET("friendList/{uid}")
     fun getFriends(

@@ -15,7 +15,7 @@ class ApiClient {
         fun getApiClient() : Retrofit {
             val gson = GsonBuilder().setLenient().create()
             val okHttpClient = OkHttpClient.Builder()
-                .readTimeout(1, TimeUnit.SECONDS)
+                .readTimeout(5, TimeUnit.SECONDS)
                 .connectTimeout(1, TimeUnit.SECONDS)
                 .build()
             if(retrofit == null) {

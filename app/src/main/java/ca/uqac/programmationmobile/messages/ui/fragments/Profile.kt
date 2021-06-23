@@ -33,7 +33,7 @@ class Profile : Fragment() {
         UserDataSource(requireContext()).createUser(
             account!!.id,
             account!!.displayName,
-            (account!!.photoUrl ?: "") as String
+            (account!!.photoUrl ?: "EMPTY") as String
         )
 
         view.findViewById<TextView>(R.id.username).also { textview ->
@@ -53,11 +53,20 @@ class Profile : Fragment() {
         }
 
         view.findViewById<ImageView>(R.id.profile_image).also { imageView ->
+            var photoUrl : String?
+
             Picasso.get()
-                .load(account?.photoUrl.toString().replace("http:", "https:"))
-                .placeholder(R.drawable.ic_profile)
+                .load(R.drawable.ic_profile)
                 .error(R.drawable.ic_profile)
                 .into(imageView);
+
+            account?.photoUrl?.let { uri ->
+                photoUrl = uri.toString().replace("http:", "https:")
+                Picasso.get()
+                    .load(photoUrl)
+                    .error(R.drawable.ic_profile)
+                    .into(imageView);
+            }
         }
 
 

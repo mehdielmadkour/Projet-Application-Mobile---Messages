@@ -13,6 +13,7 @@ import ca.uqac.programmationmobile.messages.adapters.FriendsAdapter
 import ca.uqac.programmationmobile.messages.adapters.MessagesAdapter
 import ca.uqac.programmationmobile.messages.data.MessagesDataSource
 import ca.uqac.programmationmobile.messages.data.UserDataSource
+import com.google.android.gms.auth.api.signin.GoogleSignIn
 
 class Friends : Fragment() {
     override fun onCreateView(
@@ -24,7 +25,9 @@ class Friends : Fragment() {
 
         view.findViewById<RecyclerView>(R.id.friend_list).adapter = FriendsAdapter(null)
 
-        UserDataSource(requireContext()).getFriends("123").observe(viewLifecycleOwner, { holder ->
+        val account = GoogleSignIn.getLastSignedInAccount(context)
+
+        UserDataSource(requireContext()).getFriends(account!!.id).observe(viewLifecycleOwner, { holder ->
             if (holder.users != null) {
                 (view.findViewById<RecyclerView>(R.id.friend_list).adapter as FriendsAdapter).updateData(holder.users)
             }

@@ -1,6 +1,7 @@
 package ca.uqac.programmationmobile.messages.data
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import ca.uqac.programmationmobile.messages.models.User
@@ -20,7 +21,10 @@ class UserDataSource(val context: Context) {
     }
 
     fun createUser(uid : String, username : String, photoUrl : String) {
-        apiInterface?.createUser(uid, username, photoUrl)
+        apiInterface?.createUser(uid, username, photoUrl)?.enqueue(object : retrofit2.Callback<Unit>{
+            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {}
+            override fun onFailure(call: Call<Unit>, t: Throwable) {}
+        })
     }
 
     fun getUser(uid : String) : LiveData<UserHolder> {
@@ -45,7 +49,10 @@ class UserDataSource(val context: Context) {
     }
 
     fun addFriend(uid: String, friendId: String) {
-        apiInterface?.addFriend(uid, friendId)
+        apiInterface?.addFriend(uid, friendId)?.enqueue(object : retrofit2.Callback<Unit>{
+            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {}
+            override fun onFailure(call: Call<Unit>, t: Throwable) {}
+        })
     }
 
     fun getFriends(uid: String) : LiveData<UsersHolder> {
