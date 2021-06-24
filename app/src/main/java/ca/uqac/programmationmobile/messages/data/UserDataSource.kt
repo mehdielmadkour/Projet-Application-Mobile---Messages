@@ -1,7 +1,6 @@
 package ca.uqac.programmationmobile.messages.data
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import ca.uqac.programmationmobile.messages.models.User

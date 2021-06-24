@@ -12,6 +12,7 @@ import ca.uqac.programmationmobile.messages.R
 import ca.uqac.programmationmobile.messages.adapters.ConversationsAdapter
 import ca.uqac.programmationmobile.messages.data.ConversationsDataSource
 import ca.uqac.programmationmobile.messages.models.Conversation
+import com.google.android.gms.auth.api.signin.GoogleSignIn
 
 class ConversationList : Fragment() {
     override fun onCreateView(
@@ -25,7 +26,9 @@ class ConversationList : Fragment() {
             onConversationClick(conversation)
         }
 
-        ConversationsDataSource().getUserConversations("").observe(viewLifecycleOwner, { holder ->
+        val account = GoogleSignIn.getLastSignedInAccount(context)
+
+        ConversationsDataSource(requireContext()).getUserConversations(account!!.id).observe(viewLifecycleOwner, { holder ->
             if (holder.conversations != null) {
                 (view.findViewById<RecyclerView>(R.id.conversation_list).adapter as ConversationsAdapter).updateData(holder.conversations)
             }
