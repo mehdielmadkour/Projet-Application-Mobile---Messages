@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.lifecycle.LifecycleOwner
@@ -14,10 +13,11 @@ import ca.uqac.programmationmobile.messages.R
 import ca.uqac.programmationmobile.messages.data.UserDataSource
 import ca.uqac.programmationmobile.messages.models.Message
 import ca.uqac.programmationmobile.messages.utils.Time
+import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.squareup.picasso.Picasso
 
-class MessagesAdapter(private var dataset: List<Message>? = null, private val context : Context, private val viewLifecycleOwner: LifecycleOwner) : RecyclerView.Adapter<MessagesAdapter.MessageViewHolder>() {
-    class MessageViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
+class MessagesAdapter(private var dataset: List<Message>? = null, private val context: Context, private val viewLifecycleOwner: LifecycleOwner) : RecyclerView.Adapter<MessagesAdapter.MessageViewHolder>() {
+    abstract class MessageViewHolder(val view: View) : RecyclerView.ViewHolder(view){
         val text_message : TextView = view.findViewById(R.id.text_message)
         val thumbnail : ImageView = view.findViewById(R.id.thumbnail)
         val cardUser : CardView = view.findViewById(R.id.card_user)
@@ -25,11 +25,25 @@ class MessagesAdapter(private var dataset: List<Message>? = null, private val co
         val date : TextView = view.findViewById(R.id.date)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessageViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.message_item_layout, parent, false)
+    class MessageViewHolderRight(view: View) : MessageViewHolder(view)
+    class MessageViewHolderLeft(view: View) : MessageViewHolder(view)
 
-        return MessageViewHolder(view)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessageViewHolder {
+
+        return when (viewType) {
+            0 -> MessageViewHolderRight(LayoutInflater.from(parent.context)
+                .inflate(R.layout.message_item_layout_right, parent, false))
+            else -> MessageViewHolderLeft(LayoutInflater.from(parent.context)
+                .inflate(R.layout.message_item_layout_left, parent, false))
+        }
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        val message = dataset!![position]
+        val account = GoogleSignIn.getLastSignedInAccount(context)
+
+        if (account?.id == message.user) return 0
+        else return 1
     }
 
     override fun onBindViewHolder(holder: MessageViewHolder, position: Int) {
@@ -37,25 +51,29 @@ class MessagesAdapter(private var dataset: List<Message>? = null, private val co
         val message = dataset!![position]
         holder.text_message.text = message.text
         if (position > 0){
-            val previousMessage = dataset!![position-1]
+            val nextMessage = dataset!![position-1]
 
-            if (Time().getDate(message.timestamp) == Time().getDate(previousMessage.timestamp)) holder.date.visibility = TextView.GONE
+            if (Time().getDate(message.timestamp) == Time().getDate(nextMessage.timestamp)) holder.date.visibility = TextView.GONE
             else holder.date.text = Time().getDate(message.timestamp)
 
-            if (Time().getTime(message.timestamp) == Time().getTime(previousMessage.timestamp)) holder.timestamp.visibility = TextView.GONE
+            if (Time().getTime(message.timestamp) == Time().getTime(nextMessage.timestamp)) holder.timestamp.visibility = TextView.GONE
             else holder.timestamp.text = Time().getTime(message.timestamp)
 
-            if (message.user == previousMessage.user) {
+            if (message.user == nextMessage.user) {
                 holder.cardUser.visibility = TextView.INVISIBLE
                 holder.thumbnail.visibility = TextView.INVISIBLE
             }
+            else updateThumbnail(holder, message)
 
             return
         }
         holder.date.text = Time().getDate(message.timestamp)
         holder.timestamp.text = Time().getTime(message.timestamp)
+        updateThumbnail(holder, message)
+    }
 
-        UserDataSource(context).getUser(message.user).observe(viewLifecycleOwner, { userHolder ->
+    fun updateThumbnail(holder: MessageViewHolder, message: Message) {
+        UserDataSource().getUser(message.user).observe(viewLifecycleOwner, { userHolder ->
             if (userHolder.user != null) {
                 Picasso.get()
                     .load(R.drawable.ic_profile)

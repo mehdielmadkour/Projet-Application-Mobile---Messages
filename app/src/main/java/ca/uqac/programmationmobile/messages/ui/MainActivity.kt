@@ -9,6 +9,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import ca.uqac.programmationmobile.messages.R
+import ca.uqac.programmationmobile.messages.services.MessageService
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
@@ -42,6 +43,12 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, bottomNavConfig)
         navBar.setupWithNavController(navController)
+
+        Intent(this, MessageService::class.java)
+            .putExtra("uid", account?.id)
+            .also { intent ->
+                startService(intent)
+            }
     }
 
     fun askForPermission(permissions : Array<String>, requestCode: Int, listener: (Int, String, Boolean) -> Unit){

@@ -1,5 +1,6 @@
 package ca.uqac.programmationmobile.messages.ui.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -14,6 +15,7 @@ import ca.uqac.programmationmobile.messages.R
 import ca.uqac.programmationmobile.messages.adapters.MessagesAdapter
 import ca.uqac.programmationmobile.messages.data.ConversationsDataSource
 import ca.uqac.programmationmobile.messages.data.MessagesDataSource
+import ca.uqac.programmationmobile.messages.services.MessageService
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 
 class Conversation : Fragment() {
@@ -29,14 +31,13 @@ class Conversation : Fragment() {
 
         view.findViewById<RecyclerView>(R.id.recycler_chat).adapter = MessagesAdapter(null, requireContext(), viewLifecycleOwner)
 
-        MessagesDataSource(requireContext(), viewLifecycleOwner).getMessagesfromConversation(conversationId).observe(viewLifecycleOwner, { holder ->
-            if (holder.messages != null) {
-                (view.findViewById<RecyclerView>(R.id.recycler_chat).adapter as MessagesAdapter).updateData(holder.messages)
+        Intent(context, MessageService::class.java)
+            .putExtra("conversationId", conversationId)
+            .also { intent ->
+                context?.startService(intent)
             }
-            else {
-                Toast.makeText(activity, holder.errorMsg, Toast.LENGTH_SHORT).show()
-            }
-        })
+
+        updateMessages(conversationId)
 
         view.findViewById<Button>(R.id.button_send).setOnClickListener {
             val editText = view.findViewById<EditText>(R.id.edit_message)
@@ -44,9 +45,22 @@ class Conversation : Fragment() {
             if (text != "") {
                 MessagesDataSource(requireContext(), viewLifecycleOwner).postMessage(conversationId, account!!.id, text)
                 editText.text = null
+                updateMessages(conversationId)
             }
         }
 
         return view
+    }
+
+    fun updateMessages(conversationId: String) {
+        ConversationsDataSource.updateConversation(conversationId)
+        ConversationsDataSource.conversationHolder.observe(viewLifecycleOwner, { holder ->
+            if (holder.conversation?.messages != null) {
+                (view?.findViewById<RecyclerView>(R.id.recycler_chat)?.adapter as MessagesAdapter).updateData(holder.conversation.messages)
+            }
+            else {
+                Toast.makeText(activity, holder.errorMsg, Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 }
