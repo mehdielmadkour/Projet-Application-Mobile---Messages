@@ -1,30 +1,34 @@
 package ca.uqac.programmationmobile.messages.data
 
+import android.content.Context
+import android.widget.Toast
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.recyclerview.widget.RecyclerView
+import ca.uqac.programmationmobile.messages.R
+import ca.uqac.programmationmobile.messages.adapters.ConversationsAdapter
 import ca.uqac.programmationmobile.messages.models.Message
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
 
-class MessagesDataSource {
+class MessagesDataSource(val context : Context, val viewLifecycleOwner: LifecycleOwner) {
 
     data class MessagesHolder(val messages: List<Message>?, val errorMsg: String?)
 
     fun getMessagesfromConversation(conversationId: String) : LiveData<MessagesHolder> {
         val data = MutableLiveData<MessagesHolder>()
 
-        val messages = listOf<Message>(
-            Message("bonjour!", "user1","2021-01-01 10:50:00"),
-            Message("bonjour!", "user1","2021-01-01 10:51:00"),
-            Message("bonjour!", "user2","2021-01-02 10:50:00"),
-            Message("bonjour!", "user2","2021-01-02 10:52:00"),
-            Message("bonjour!", "user2","2021-01-03 10:40:00"),
-            Message("bonjour!", "user3","2021-01-03 10:50:00")
-        )
-
-        data.value = MessagesHolder(messages, null)
+        ConversationsDataSource(context).getConversation(conversationId).observe(viewLifecycleOwner, { holder ->
+            if (holder.conversation != null) {
+                data.value = MessagesHolder(holder.conversation.messages, null)
+            }
+            else {
+                data.value = MessagesHolder(null, holder.errorMsg)
+            }
+        })
 
         return data
     }

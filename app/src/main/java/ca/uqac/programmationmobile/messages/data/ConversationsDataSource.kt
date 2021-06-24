@@ -12,7 +12,7 @@ import retrofit2.Call
 import retrofit2.Response
 
 class ConversationsDataSource(val context : Context) {
-    data class ConversationHolder(val conversations: Conversation?, val errorMsg: String?)
+    data class ConversationHolder(val conversation: Conversation?, val errorMsg: String?)
     data class ConversationsHolder(val conversations: List<Conversation>?, val errorMsg: String?)
 
     private var apiInterface: APIConversationInterface? = null

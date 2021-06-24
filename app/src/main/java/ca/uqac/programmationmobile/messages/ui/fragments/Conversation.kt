@@ -24,7 +24,7 @@ class Conversation : Fragment() {
 
         view.findViewById<RecyclerView>(R.id.recycler_chat).adapter = MessagesAdapter(null)
 
-        MessagesDataSource().getMessagesfromConversation(conversationId).observe(viewLifecycleOwner, { holder ->
+        MessagesDataSource(requireContext(), viewLifecycleOwner).getMessagesfromConversation(conversationId).observe(viewLifecycleOwner, { holder ->
             if (holder.messages != null) {
                 (view.findViewById<RecyclerView>(R.id.recycler_chat).adapter as MessagesAdapter).updateData(holder.messages)
             }
