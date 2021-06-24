@@ -31,7 +31,7 @@ class MessagesDataSource(val context : Context, val viewLifecycleOwner: Lifecycl
     fun getMessagesfromConversation(conversationId: String) : LiveData<MessagesHolder> {
         val data = MutableLiveData<MessagesHolder>()
 
-        ConversationsDataSource(context).getConversation(conversationId).observe(viewLifecycleOwner, { holder ->
+        ConversationsDataSource.getConversation(conversationId).observe(viewLifecycleOwner, { holder ->
             if (holder.conversation != null) {
                 data.value = MessagesHolder(holder.conversation.messages, null)
             }

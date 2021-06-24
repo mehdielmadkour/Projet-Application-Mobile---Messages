@@ -9,7 +9,7 @@ import ca.uqac.programmationmobile.messages.network.ApiClient
 import retrofit2.Call
 import retrofit2.Response
 
-class UserDataSource(val context: Context) {
+class UserDataSource(val context: Context? = null) {
     data class UserHolder(val user: User?, val errorMsg: String?)
     data class UsersHolder(val users: List<User>?, val errorMsg: String?)
 

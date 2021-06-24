@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="ca.uqac.programmationmobile.messages">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -10,17 +13,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Messages"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.LoginActivity"></activity>
-        <activity android:name=".ui.MainActivity">
+        <activity android:name=".ui.SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            </intent-filter></activity>
+        <activity android:name=".ui.LoginActivity"/>
+        <activity android:name=".ui.MainActivity"/>
+        <service android:name=".services.MessageService"/>
     </application>
-
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.CAMERA"/>
 
 </manifest>

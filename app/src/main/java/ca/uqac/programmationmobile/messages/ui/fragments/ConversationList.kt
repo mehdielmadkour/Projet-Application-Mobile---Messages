@@ -22,13 +22,13 @@ class ConversationList : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_conversation_list, container, false)
 
-        view.findViewById<RecyclerView>(R.id.conversation_list).adapter = ConversationsAdapter(null) { conversation ->
+        view.findViewById<RecyclerView>(R.id.conversation_list).adapter = ConversationsAdapter(null, viewLifecycleOwner = viewLifecycleOwner, callback = { conversation ->
             onConversationClick(conversation)
-        }
+        })
 
         val account = GoogleSignIn.getLastSignedInAccount(context)
 
-        ConversationsDataSource(requireContext()).getUserConversations(account!!.id).observe(viewLifecycleOwner, { holder ->
+        ConversationsDataSource.getUserConversations(account!!.id).observe(viewLifecycleOwner, { holder ->
             if (holder.conversations != null) {
                 (view.findViewById<RecyclerView>(R.id.conversation_list).adapter as ConversationsAdapter).updateData(holder.conversations)
             }

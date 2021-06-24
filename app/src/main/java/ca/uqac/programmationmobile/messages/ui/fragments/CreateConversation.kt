@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import ca.uqac.programmationmobile.messages.R
 import ca.uqac.programmationmobile.messages.data.ConversationsDataSource
+import com.google.android.gms.auth.api.signin.GoogleSignIn
 
 class CreateConversation : Fragment() {
     override fun onCreateView(
@@ -20,9 +21,11 @@ class CreateConversation : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_create_conversation, container, false)
 
+        val account = GoogleSignIn.getLastSignedInAccount(context)
+
         view.findViewById<Button>(R.id.create_conversation_btn).setOnClickListener {
             val editText = view.findViewById<EditText>(R.id.conversation_name)
-            ConversationsDataSource(requireContext()).createConversation(editText.text.toString()).observe(viewLifecycleOwner, { id ->
+            ConversationsDataSource.createConversation(editText.text.toString(), account!!.id).observe(viewLifecycleOwner, { id ->
                 val action = CreateConversationDirections.actionCreateConversationToConversation3(conversationId = id)
                 findNavController().navigate(action)
             })
