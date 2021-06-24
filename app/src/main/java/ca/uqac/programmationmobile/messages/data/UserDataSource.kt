@@ -10,7 +10,7 @@ import retrofit2.Call
 import retrofit2.Response
 
 class UserDataSource(val context: Context) {
-    data class UserHolder(val users: User?, val errorMsg: String?)
+    data class UserHolder(val user: User?, val errorMsg: String?)
     data class UsersHolder(val users: List<User>?, val errorMsg: String?)
 
     private var apiInterface: APIUserInterface? = null

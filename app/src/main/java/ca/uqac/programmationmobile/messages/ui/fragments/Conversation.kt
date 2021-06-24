@@ -22,7 +22,7 @@ class Conversation : Fragment() {
 
         val conversationId = arguments?.get("conversationId") as String
 
-        view.findViewById<RecyclerView>(R.id.recycler_chat).adapter = MessagesAdapter(null)
+        view.findViewById<RecyclerView>(R.id.recycler_chat).adapter = MessagesAdapter(null, requireContext(), viewLifecycleOwner)
 
         MessagesDataSource(requireContext(), viewLifecycleOwner).getMessagesfromConversation(conversationId).observe(viewLifecycleOwner, { holder ->
             if (holder.messages != null) {
