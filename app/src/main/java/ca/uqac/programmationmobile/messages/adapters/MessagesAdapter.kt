@@ -1,5 +1,6 @@
 package ca.uqac.programmationmobile.messages.adapters
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,12 +8,15 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.cardview.widget.CardView
+import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import ca.uqac.programmationmobile.messages.R
+import ca.uqac.programmationmobile.messages.data.UserDataSource
 import ca.uqac.programmationmobile.messages.models.Message
 import ca.uqac.programmationmobile.messages.utils.Time
+import com.squareup.picasso.Picasso
 
-class MessagesAdapter(private var dataset: List<Message>? = null) : RecyclerView.Adapter<MessagesAdapter.MessageViewHolder>() {
+class MessagesAdapter(private var dataset: List<Message>? = null, private val context : Context, private val viewLifecycleOwner: LifecycleOwner) : RecyclerView.Adapter<MessagesAdapter.MessageViewHolder>() {
     class MessageViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
         val text_message : TextView = view.findViewById(R.id.text_message)
         val thumbnail : ImageView = view.findViewById(R.id.thumbnail)
@@ -50,6 +54,23 @@ class MessagesAdapter(private var dataset: List<Message>? = null) : RecyclerView
         }
         holder.date.text = Time().getDate(message.timestamp)
         holder.timestamp.text = Time().getTime(message.timestamp)
+
+        UserDataSource(context).getUser(message.user).observe(viewLifecycleOwner, { userHolder ->
+            if (userHolder.user != null) {
+                Picasso.get()
+                    .load(R.drawable.ic_profile)
+                    .error(R.drawable.ic_profile)
+                    .into(holder.thumbnail);
+
+                userHolder.user.photoUrl?.let { uri ->
+                    val photoUrl = uri.replace("http:", "https:")
+                    Picasso.get()
+                        .load(photoUrl)
+                        .error(R.drawable.ic_profile)
+                        .into(holder.thumbnail);
+                }
+            }
+        })
     }
 
     override fun getItemCount(): Int {

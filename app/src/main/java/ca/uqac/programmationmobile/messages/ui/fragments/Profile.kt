@@ -13,6 +13,7 @@ import android.widget.TextView
 import androidmads.library.qrgenearator.QRGContents
 import androidmads.library.qrgenearator.QRGEncoder
 import ca.uqac.programmationmobile.messages.R
+import ca.uqac.programmationmobile.messages.data.UserDataSource
 import ca.uqac.programmationmobile.messages.ui.LoginActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -28,6 +29,12 @@ class Profile : Fragment() {
 
 
         val account = GoogleSignIn.getLastSignedInAccount(context)
+
+        UserDataSource(requireContext()).createUser(
+            account!!.id,
+            account!!.displayName,
+            (account!!.photoUrl ?: "EMPTY") as String
+        )
 
         view.findViewById<TextView>(R.id.username).also { textview ->
             textview.text = account!!.displayName
@@ -46,11 +53,20 @@ class Profile : Fragment() {
         }
 
         view.findViewById<ImageView>(R.id.profile_image).also { imageView ->
+            var photoUrl : String?
+
             Picasso.get()
-                .load(account?.photoUrl.toString().replace("http:", "https:"))
-                .placeholder(R.drawable.ic_profile)
+                .load(R.drawable.ic_profile)
                 .error(R.drawable.ic_profile)
                 .into(imageView);
+
+            account?.photoUrl?.let { uri ->
+                photoUrl = uri.toString().replace("http:", "https:")
+                Picasso.get()
+                    .load(photoUrl)
+                    .error(R.drawable.ic_profile)
+                    .into(imageView);
+            }
         }
 
 

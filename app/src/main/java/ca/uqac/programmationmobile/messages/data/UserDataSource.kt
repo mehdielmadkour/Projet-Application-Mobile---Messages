@@ -1,33 +1,77 @@
 package ca.uqac.programmationmobile.messages.data
 
-import android.util.Log
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import ca.uqac.programmationmobile.messages.models.Message
 import ca.uqac.programmationmobile.messages.models.User
+import ca.uqac.programmationmobile.messages.network.APIUserInterface
+import ca.uqac.programmationmobile.messages.network.ApiClient
+import retrofit2.Call
+import retrofit2.Response
 
-class UserDataSource {
-
+class UserDataSource(val context: Context) {
+    data class UserHolder(val user: User?, val errorMsg: String?)
     data class UsersHolder(val users: List<User>?, val errorMsg: String?)
 
-    fun getFriends(uid: String) : LiveData<UsersHolder> {
-        val data = MutableLiveData<UsersHolder>()
+    private var apiInterface: APIUserInterface? = null
 
-        val friends = listOf<User>(
-            User("1", "user1", "http://i.imgur.com/DvpvklR.pnghttp://i.imgur.com/DvpvklR.png"),
-            User("2", "user2", "http://i.imgur.com/DvpvklR.pnghttp://i.imgur.com/DvpvklR.png"),
-            User("3", "user3", "http://i.imgur.com/DvpvklR.pnghttp://i.imgur.com/DvpvklR.png"),
-            User("4", "user4", "http://i.imgur.com/DvpvklR.pnghttp://i.imgur.com/DvpvklR.png"),
-            User("5", "user5", "http://i.imgur.com/DvpvklR.pnghttp://i.imgur.com/DvpvklR.png"),
-            User("6", "user6", "http://i.imgur.com/DvpvklR.pnghttp://i.imgur.com/DvpvklR.png")
-        )
+    init {
+        apiInterface = ApiClient.getApiClient().create(APIUserInterface::class.java)
+    }
 
-        data.value = UsersHolder(friends, null)
+    fun createUser(uid : String, username : String, photoUrl : String) {
+        apiInterface?.createUser(uid, username, photoUrl)?.enqueue(object : retrofit2.Callback<Unit>{
+            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {}
+            override fun onFailure(call: Call<Unit>, t: Throwable) {}
+        })
+    }
+
+    fun getUser(uid : String) : LiveData<UserHolder> {
+        val data = MutableLiveData<UserHolder>()
+
+        apiInterface?.getUser(uid)?.enqueue(object : retrofit2.Callback<User>{
+            override fun onResponse(call: Call<User>, response: Response<User>) {
+                val res = response.body()
+                if(response.code() == 200) {
+
+                    if (res != null) data.value = UserHolder(res, null)
+                    else data.value = UserHolder(null, "User not found")
+                }
+            }
+
+            override fun onFailure(call: Call<User>, t: Throwable) {
+                data.value = UserHolder(null, "Something went wrong")
+            }
+        })
 
         return data
     }
 
     fun addFriend(uid: String, friendId: String) {
-        Log.d("UserDataSource", "add $friendId to $uid's friends")
+        apiInterface?.addFriend(uid, friendId)?.enqueue(object : retrofit2.Callback<Unit>{
+            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {}
+            override fun onFailure(call: Call<Unit>, t: Throwable) {}
+        })
+    }
+
+    fun getFriends(uid: String) : LiveData<UsersHolder> {
+        val data = MutableLiveData<UsersHolder>()
+
+        apiInterface?.getFriends(uid)?.enqueue(object :retrofit2.Callback<List<User>>{
+            override fun onResponse(call: Call<List<User>>, response: Response<List<User>>) {
+                val res = response.body()
+                if(response.code() == 200) {
+
+                    if (res != null) data.value = UsersHolder(res, null)
+                    else data.value = UsersHolder(null, "Friends not found")
+                }
+            }
+
+            override fun onFailure(call: Call<List<User>>, t: Throwable) {
+                data.value = UsersHolder(null, "Something went wrong")
+            }
+        })
+
+        return data
     }
 }

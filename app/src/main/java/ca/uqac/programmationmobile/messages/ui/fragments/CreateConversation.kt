@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import ca.uqac.programmationmobile.messages.R
 import ca.uqac.programmationmobile.messages.data.ConversationsDataSource
@@ -21,10 +22,10 @@ class CreateConversation : Fragment() {
 
         view.findViewById<Button>(R.id.create_conversation_btn).setOnClickListener {
             val editText = view.findViewById<EditText>(R.id.conversation_name)
-            ConversationsDataSource().createConversation(editText.text.toString()).also { id ->
+            ConversationsDataSource(requireContext()).createConversation(editText.text.toString()).observe(viewLifecycleOwner, { id ->
                 val action = CreateConversationDirections.actionCreateConversationToConversation3(conversationId = id)
                 findNavController().navigate(action)
-            }
+            })
         }
 
         return view
