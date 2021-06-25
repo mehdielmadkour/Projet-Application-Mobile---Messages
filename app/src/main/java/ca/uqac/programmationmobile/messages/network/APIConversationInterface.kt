@@ -31,4 +31,10 @@ interface APIConversationInterface {
     fun getConversations(
         @Path("id") id : String
     ) : Call<List<Conversation>>
+
+    @POST("inviteFriend/{conversationId}/{friendId}")
+    fun inviteFriend(
+        @Path("conversationId") conversationId: String,
+        @Path("friendId") friendId: String
+    ) : Call<Unit>
 }
