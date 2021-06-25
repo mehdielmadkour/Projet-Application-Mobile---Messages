@@ -92,5 +92,12 @@ class ConversationsDataSource {
 
             return data
         }
+
+        fun inviteFriend(conversationId: String, friendId: String) {
+            apiInterface?.inviteFriend(conversationId, friendId)?.enqueue(object : retrofit2.Callback<Unit>{
+                override fun onResponse(call: Call<Unit>, response: Response<Unit>) {}
+                override fun onFailure(call: Call<Unit>, t: Throwable) {}
+            })
+        }
     }
 }

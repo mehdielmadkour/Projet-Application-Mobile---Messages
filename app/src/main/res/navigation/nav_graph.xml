@@ -39,7 +39,16 @@
     <fragment
         android:id="@+id/conversation3"
         android:name="ca.uqac.programmationmobile.messages.ui.fragments.Conversation"
-        android:label="Conversation" />
+        android:label="Conversation" >
+        <action
+            android:id="@+id/action_conversation3_to_inviteFriends"
+            app:destination="@id/inviteFriends">
+            <argument
+                android:name="conversationId"
+                app:argType="string"
+                android:defaultValue="NONE"/>
+        </action>
+    </fragment>
     <fragment
         android:id="@+id/createConversation"
         android:name="ca.uqac.programmationmobile.messages.ui.fragments.CreateConversation"
@@ -62,5 +71,19 @@
         <action
             android:id="@+id/action_qrScanner_to_friends"
             app:destination="@id/friends" />
+    </fragment>
+    <fragment
+        android:id="@+id/inviteFriends"
+        android:name="ca.uqac.programmationmobile.messages.ui.fragments.InviteFriends"
+        android:label="fragment_invite_friends"
+        tools:layout="@layout/fragment_invite_friends" >
+        <action
+            android:id="@+id/action_inviteFriends_to_conversation3"
+            app:destination="@id/conversation3">
+            <argument
+                android:name="conversationId"
+                app:argType="string"
+                android:defaultValue="NONE"/>
+        </action>
     </fragment>
 </navigation>
